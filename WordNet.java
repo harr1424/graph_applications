@@ -113,10 +113,9 @@ public class WordNet {
             // associate bag of sysnset elements with synID
             synsetsByID.put(synId, synBag);
 
-            // get ST of nouns and Bag<Ids>
+            // get symbol table of nouns and Bag<Ids>
             // one noun may have many IDs
-            // need to check if noun key entry already exists
-            // and if it does, modify to include current id
+            // need to check if noun key entry already exists and if it does, modify to include current id
             Bag<Integer> currIDbag = new Bag<Integer>();
             currIDbag.add(synId);
             for (String string : synset) {

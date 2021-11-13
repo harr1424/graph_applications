@@ -40,7 +40,7 @@ import java.util.Iterator;
 
 
 public class ShortestCommonAncestor {
-    private Digraph DAG;                    // digraph in question
+    private Digraph DAG;
     private ArrayList<Integer> keysToNull; // keep track of vertex indexed array indices which have been modified
     private Queue<Integer> firstQ;         // Queue for BFS on first vertex or subset
     private Queue<Integer> secondQ;        // Queue for BFS on second vertex or subset
@@ -73,7 +73,7 @@ public class ShortestCommonAncestor {
         distanceByReachables = new LinearProbingHashST<Integer, Integer>();
     }
 
-    // length of shortest ancestral path between v and w
+    // length of the shortest ancestral path between v and w
     public int length(int v, int w) {
         checkVertex(v);
         checkVertex(w);
@@ -89,7 +89,7 @@ public class ShortestCommonAncestor {
             for (int adjacent : DAG
                     .adj(nextInQueue)) {     // for each vertex adjacent to v (or reachable from v)
                 distV[adjacent] = distV[nextInQueue]
-                        + 1; // set distance of that vertex from v to the number of BFS iterations that got us here
+                        + 1; // set distance of that vertex from v to the number of BFS iterations
                 keysToNull.add(adjacent);                 // keep track of indices to reset to -1
                 firstQ.enqueue(adjacent);                 // place adjacent vertex on queue
             }
@@ -105,7 +105,7 @@ public class ShortestCommonAncestor {
                 distW[adjacent] = distW[nextInQueue] + 1;
                 keysToNull.add(adjacent);
                 secondQ.enqueue(adjacent);
-                if (distV[adjacent] != -1) {  // optimization: why not find distance here?
+                if (distV[adjacent] != -1) {  // optimization: find distance here
                     distanceByReachables.put(adjacent, (distV[adjacent]) + distW[adjacent]);
                 }
             }
@@ -119,7 +119,7 @@ public class ShortestCommonAncestor {
             }
         }
 
-        // CLEAR WORK DONE IN CALL
+        // clear work done in this call to function
         for (int key : keysToNull) {
             distV[key] = -1;
             distW[key] = -1;
@@ -179,7 +179,7 @@ public class ShortestCommonAncestor {
             }
         }
 
-        // CLEAR WORK DONE IN CALL
+        // clear work done in this call to function
         for (int key : keysToNull) {
             distV[key] = -1;
             distW[key] = -1;
@@ -194,9 +194,9 @@ public class ShortestCommonAncestor {
         return ancestor;
     }
 
-    // length of shortest ancestral path of vertex subsets A and B
+    // length of the shortest ancestral path of vertex subsets A and B
     public int length(Iterable<Integer> subsetA, Iterable<Integer> subsetB) throws IOException {
-        // Output shortest length of all pairs
+        // Output the shortest length of all pairs
         if (subsetA == null || subsetB == null) throw new NullPointerException();
         Iterator<Integer> aIT = subsetA.iterator();
         Iterator<Integer> bIT = subsetB.iterator();
@@ -245,7 +245,7 @@ public class ShortestCommonAncestor {
             }
         }
 
-        // CLEAR WORK DONE IN CALL
+        // clear work done in this call to function
         for (int key : keysToNull) {
             distV[key] = -1;
             distW[key] = -1;
@@ -311,7 +311,7 @@ public class ShortestCommonAncestor {
             }
         }
 
-        // CLEAR WORK DONE IN CALL
+        // clear work done in this call to function
         for (int key : keysToNull) {
             distV[key] = -1;
             distW[key] = -1;
@@ -333,7 +333,7 @@ public class ShortestCommonAncestor {
     }
 
 
-    // do unit testing of this class
+    // unit test
     public static void main(String[] args) throws IOException {
 
         // Build unit tests
@@ -351,40 +351,5 @@ public class ShortestCommonAncestor {
                 StdOut.printf("length = %d, ancestor = %d\n", length, ancestor);
             }
         }
-    }
-
-    // Unit test made by me
-    public static void manualUnitTest() throws IOException {
-        // Basic tree test
-        int numVertices = 5;// or whatever
-        Digraph d1 = new Digraph(numVertices);
-        d1.addEdge(2, 0); // add a bunch of these, to form some tree-like shape, e.g.:
-        d1.addEdge(1, 0);
-        d1.addEdge(4, 2);
-        d1.addEdge(3, 1);
-
-        ShortestCommonAncestor sca = new ShortestCommonAncestor(d1);
-        int a = 0;
-        int b = 1;
-        int c = 2;
-        int d = 3;
-        int e = 4;
-
-        StdOut.println("result: " + sca.length(c, c));
-
-
-
-        Bag<Integer> b1 = new Bag<Integer>();
-        Bag<Integer> b2 = new Bag<Integer>();
-
-        b1.add(b);
-        b1.add(d);
-        b2.add(c);
-        b2.add(e);
-
-        StdOut.println("Testing Case: 2");
-        StdOut.println("length: " + sca.length(b1, b2));
-        StdOut.println("ancestor: " + sca.ancestor(b1, b2));
-
     }
 }
